@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -27,6 +28,8 @@ public class DrawingView extends View{
     private Canvas drawCanvas;
     // canvas bitmap
     private Bitmap canvasBitmap;
+    // Brush stroke width
+    private float brushSize, lastBrushSize;
 
     public DrawingView(Context context, AttributeSet attrs){
         super(context, attrs);
@@ -41,8 +44,6 @@ public class DrawingView extends View{
         drawPath = new Path();
         drawPaint = new Paint();
         drawPaint.setColor(paintColor);
-        // Arbitrary brush stroke width.
-        drawPaint.setStrokeWidth(20);
         // Making drawing smooth.
         drawPaint.setAntiAlias(true);
         drawPaint.setStyle(Paint.Style.STROKE);
@@ -50,6 +51,11 @@ public class DrawingView extends View{
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
 
         canvasPaint = new Paint(Paint.DITHER_FLAG);
+
+        // Initial brush size is medium.
+        brushSize = getResources().getInteger(R.integer.medium_size);
+        lastBrushSize = brushSize;
+        drawPaint.setStrokeWidth(brushSize);
     }
 
     @Override
@@ -97,5 +103,19 @@ public class DrawingView extends View{
         invalidate();
         paintColor = Color.parseColor(newColor);
         drawPaint.setColor(paintColor);
+    }
+
+    public void setBrushSize(float newSize){
+        float pixelAmount = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                newSize, getResources().getDisplayMetrics());
+        brushSize=pixelAmount;
+        drawPaint.setStrokeWidth(brushSize);
+    }
+
+    public void setLastBrushSize(float lastSize){
+        lastBrushSize=lastSize;
+    }
+    public float getLastBrushSize(){
+        return lastBrushSize;
     }
 }

@@ -16,28 +16,28 @@
         >
 
         <ImageButton
-            android:id="@+id/new_btn"
+            android:id="@+id/buttonNew"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:contentDescription="@string/start_new"
             android:src="@drawable/new_pic" />
 
         <ImageButton
-            android:id="@+id/draw_btn"
+            android:id="@+id/buttonBrush"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:contentDescription="@string/brush"
             android:src="@drawable/brush" />
 
         <ImageButton
-            android:id="@+id/erase_btn"
+            android:id="@+id/buttonErase"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:contentDescription="@string/erase"
             android:src="@drawable/eraser" />
 
         <ImageButton
-            android:id="@+id/save_btn"
+            android:id="@+id/buttonSave"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:contentDescription="@string/save"
@@ -70,7 +70,7 @@
             android:layout_margin="2dp"
             android:background="@color/white"
             android:contentDescription="@string/paint"
-            android:onClick="palletClicked"
+            android:onClick="paintClicked"
             android:src="@drawable/pallet"
             android:tag="@color/white" />
 

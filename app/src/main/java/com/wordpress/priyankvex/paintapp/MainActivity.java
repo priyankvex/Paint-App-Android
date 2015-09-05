@@ -1,5 +1,6 @@
 package com.wordpress.priyankvex.paintapp;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -7,10 +8,11 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private DrawingView mDrawingView;
-    private ImageButton currPaint;
+    private ImageButton currPaint, drawButton;
+    private float smallBrush, mediumBrush, largeBrush;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,15 @@ public class MainActivity extends AppCompatActivity {
         // 0th child is white color, so selecting first child to give black as initial color.
         currPaint = (ImageButton)paintLayout.getChildAt(1);
         currPaint.setImageDrawable(getResources().getDrawable(R.drawable.pallet_pressed));
+        drawButton = (ImageButton) findViewById(R.id.buttonBrush);
+        drawButton.setOnClickListener(this);
+
+        smallBrush = getResources().getInteger(R.integer.small_size);
+        mediumBrush = getResources().getInteger(R.integer.medium_size);
+        largeBrush = getResources().getInteger(R.integer.large_size);
+
+        // Set the initial brush size
+        mDrawingView.setBrushSize(mediumBrush);
 
     }
 
@@ -42,5 +53,52 @@ public class MainActivity extends AppCompatActivity {
             currPaint = (ImageButton)view;
         }
     }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch(id){
+            case R.id.buttonBrush:
+                // Show brush size chooser dialog
+                showBrushSizeChooserDialog();
+                break;
+        }
+    }
+
+    private void showBrushSizeChooserDialog(){
+        final Dialog brushDialog = new Dialog(this);
+        brushDialog.setContentView(R.layout.dialog_brush_size);
+        brushDialog.setTitle("Brush size:");
+        ImageButton smallBtn = (ImageButton)brushDialog.findViewById(R.id.small_brush);
+        smallBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawingView.setBrushSize(smallBrush);
+                mDrawingView.setLastBrushSize(smallBrush);
+                brushDialog.dismiss();
+            }
+        });
+        ImageButton mediumBtn = (ImageButton)brushDialog.findViewById(R.id.medium_brush);
+        mediumBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawingView.setBrushSize(mediumBrush);
+                mDrawingView.setLastBrushSize(mediumBrush);
+                brushDialog.dismiss();
+            }
+        });
+
+        ImageButton largeBtn = (ImageButton)brushDialog.findViewById(R.id.large_brush);
+        largeBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                mDrawingView.setBrushSize(largeBrush);
+                mDrawingView.setLastBrushSize(largeBrush);
+                brushDialog.dismiss();
+            }
+        });
+        brushDialog.show();
+    }
+
 
 }
