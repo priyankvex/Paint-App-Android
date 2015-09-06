@@ -26,6 +26,7 @@ public class DrawingView extends View{
     private Paint drawPaint, canvasPaint;
     // initial color
     private int paintColor = 0xff000000;
+    private int previousColor = paintColor;
     // canvas on which drawing takes place.
     private Canvas drawCanvas;
     // canvas bitmap
@@ -90,6 +91,11 @@ public class DrawingView extends View{
                 drawPath.lineTo(touchX, touchY);
                 break;
             case MotionEvent.ACTION_UP:
+                if (erase){
+                    drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+                } else{
+                    drawPaint.setXfermode(null);
+                }
                 drawCanvas.drawPath(drawPath, drawPaint);
                 drawPath.reset();
                 break;
@@ -107,6 +113,7 @@ public class DrawingView extends View{
         invalidate();
         paintColor = Color.parseColor(newColor);
         drawPaint.setColor(paintColor);
+        previousColor = paintColor;
     }
 
     public void setBrushSize(float newSize){
@@ -127,9 +134,13 @@ public class DrawingView extends View{
         //set erase true or false
         erase = isErase;
         if(erase) {
-            drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+            drawPaint.setColor(Color.WHITE);
+            //drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         }
-        else drawPaint.setXfermode(null);
+        else {
+            drawPaint.setColor(previousColor);
+            drawPaint.setXfermode(null);
+        }
     }
 
     public void startNew(){
