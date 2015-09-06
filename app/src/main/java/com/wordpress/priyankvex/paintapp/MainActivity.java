@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private DrawingView mDrawingView;
-    private ImageButton currPaint, drawButton;
+    private ImageButton currPaint, drawButton, eraseButton;
     private float smallBrush, mediumBrush, largeBrush;
 
     @Override
@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         currPaint.setImageDrawable(getResources().getDrawable(R.drawable.pallet_pressed));
         drawButton = (ImageButton) findViewById(R.id.buttonBrush);
         drawButton.setOnClickListener(this);
+        eraseButton = (ImageButton) findViewById(R.id.buttonErase);
+        eraseButton.setOnClickListener(this);
 
         smallBrush = getResources().getInteger(R.integer.small_size);
         mediumBrush = getResources().getInteger(R.integer.medium_size);
@@ -51,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             imageButton.setImageDrawable(getResources().getDrawable(R.drawable.pallet_pressed));
             currPaint.setImageDrawable(getResources().getDrawable(R.drawable.pallet));
             currPaint = (ImageButton)view;
+            mDrawingView.setErase(false);
+            mDrawingView.setBrushSize(mDrawingView.getLastBrushSize());
         }
     }
 
@@ -61,6 +65,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonBrush:
                 // Show brush size chooser dialog
                 showBrushSizeChooserDialog();
+                break;
+            case R.id.buttonErase:
+                // Show eraser size chooser dialog
+                showEraserSizeChooserDialog();
                 break;
         }
     }
@@ -97,8 +105,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 brushDialog.dismiss();
             }
         });
+        mDrawingView.setErase(false);
         brushDialog.show();
     }
 
+    private void showEraserSizeChooserDialog(){
+        final Dialog brushDialog = new Dialog(this);
+        brushDialog.setTitle("Eraser size:");
+        brushDialog.setContentView(R.layout.dialog_brush_size);
+        ImageButton smallBtn = (ImageButton)brushDialog.findViewById(R.id.small_brush);
+        smallBtn.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                mDrawingView.setErase(true);
+                mDrawingView.setBrushSize(smallBrush);
+                brushDialog.dismiss();
+            }
+        });
+        ImageButton mediumBtn = (ImageButton)brushDialog.findViewById(R.id.medium_brush);
+        mediumBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawingView.setErase(true);
+                mDrawingView.setBrushSize(mediumBrush);
+                brushDialog.dismiss();
+            }
+        });
+        ImageButton largeBtn = (ImageButton)brushDialog.findViewById(R.id.large_brush);
+        largeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawingView.setErase(true);
+                mDrawingView.setBrushSize(largeBrush);
+                brushDialog.dismiss();
+            }
+        });
+        brushDialog.show();
+    }
 
 }

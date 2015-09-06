@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -23,13 +25,15 @@ public class DrawingView extends View{
     // Paint object to draw drawPath and drawCanvas.
     private Paint drawPaint, canvasPaint;
     // initial color
-    private int paintColor = R.color.black;
+    private int paintColor = 0xff000000;
     // canvas on which drawing takes place.
     private Canvas drawCanvas;
     // canvas bitmap
     private Bitmap canvasBitmap;
     // Brush stroke width
     private float brushSize, lastBrushSize;
+    // To enable and disable erasing mode.
+    private boolean erase = false;
 
     public DrawingView(Context context, AttributeSet attrs){
         super(context, attrs);
@@ -117,5 +121,12 @@ public class DrawingView extends View{
     }
     public float getLastBrushSize(){
         return lastBrushSize;
+    }
+
+    public void setErase(boolean isErase){
+        //set erase true or false
+        erase = isErase;
+        if(erase) drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        else drawPaint.setXfermode(null);
     }
 }
