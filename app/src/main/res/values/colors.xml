@@ -6,4 +6,5 @@
     <item name="red" type="color">#ff0000</item>
     <item name="blue" type="color">#0000ff</item>
     <item name="yellow" type="color">#ffff00</item>
+    <item name="skin" type="color">#ffcc99</item>
 </resources>

@@ -68,11 +68,11 @@
             android:layout_width="@dimen/large_brush"
             android:layout_height="@dimen/large_brush"
             android:layout_margin="2dp"
-            android:background="@color/white"
+            android:background="@color/skin"
             android:contentDescription="@string/paint"
             android:onClick="paintClicked"
             android:src="@drawable/pallet"
-            android:tag="@color/white" />
+            android:tag="@color/skin" />
 
         <ImageButton
             android:layout_width="@dimen/large_brush"
