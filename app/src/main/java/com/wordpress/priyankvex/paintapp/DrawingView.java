@@ -9,6 +9,7 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -93,11 +94,10 @@ public class DrawingView extends View{
             case MotionEvent.ACTION_UP:
                 if (erase){
                     drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
-                } else{
-                    drawPaint.setXfermode(null);
                 }
                 drawCanvas.drawPath(drawPath, drawPaint);
                 drawPath.reset();
+                drawPaint.setXfermode(null);
                 break;
             default:
                 return false;
