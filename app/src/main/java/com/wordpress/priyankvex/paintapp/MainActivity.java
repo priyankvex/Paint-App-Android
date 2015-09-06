@@ -1,6 +1,8 @@
 package com.wordpress.priyankvex.paintapp;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,7 +13,7 @@ import android.widget.LinearLayout;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private DrawingView mDrawingView;
-    private ImageButton currPaint, drawButton, eraseButton;
+    private ImageButton currPaint, drawButton, eraseButton, newButton;
     private float smallBrush, mediumBrush, largeBrush;
 
     @Override
@@ -29,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         drawButton.setOnClickListener(this);
         eraseButton = (ImageButton) findViewById(R.id.buttonErase);
         eraseButton.setOnClickListener(this);
+        newButton = (ImageButton) findViewById(R.id.buttonNew);
+        newButton.setOnClickListener(this);
 
         smallBrush = getResources().getInteger(R.integer.small_size);
         mediumBrush = getResources().getInteger(R.integer.medium_size);
@@ -69,6 +73,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonErase:
                 // Show eraser size chooser dialog
                 showEraserSizeChooserDialog();
+                break;
+            case R.id.buttonNew:
+                // Show new painting alert dialog
+                showNewPaintingAlertDialog();
                 break;
         }
     }
@@ -141,6 +149,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         brushDialog.show();
+    }
+
+    private void showNewPaintingAlertDialog(){
+        AlertDialog.Builder newDialog = new AlertDialog.Builder(this);
+        newDialog.setTitle("New drawing");
+        newDialog.setMessage("Start new drawing (you will lose the current drawing)?");
+        newDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which){
+                mDrawingView.startNew();
+                dialog.dismiss();
+            }
+        });
+        newDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface dialog, int which){
+                dialog.cancel();
+            }
+        });
+        newDialog.show();
     }
 
 }
